@@ -1,0 +1,33 @@
+{% extends 'base.html'%}
+{% block content%}
+<div class="card mt-2 ">
+  <div class="card-header">
+    Random Quote
+  </div>
+  <div class="card-body">
+    <blockquote class="blockquote mb-0">
+      <p class="text-dark">{{quote_data.quote}}</p>
+      <footer class="blockquote-footer">Author:<cite title="Source Title">{{quote_data.author}}</cite></footer>
+    </blockquote>
+  </div>
+</div>
+<br><br>
+<div class="cont">
+    {% for post in posts%}
+    <article class="media content-section " style="margin-top:20px ;">
+      <img class="rounded-circle article-img" src="{{url_for('static',filename='photos/'+ post.author.avatar)}}" alt="">
+        <div class="media-body">
+          <div class="article-metadata">
+            <a class="mr-2" href="{{url_for('account')}}">{{ post.author.username }}</a>
+            <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+          </div>
+          <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
+          <p class="article-content">{{ post.content }}</p>
+          <p> comments:{{comments.comment}}</p>
+          <button class="btn bg-info" > <a href="{{ url_for('comment') }}" style="text-decoration:none ; color: black;">Comment</a> </button>
+         
+        </div>
+      </article>
+    {% endfor%}
+    </div>
+{% endblock %}
