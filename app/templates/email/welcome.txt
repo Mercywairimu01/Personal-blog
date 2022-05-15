@@ -1,0 +1,4 @@
+Hello {{user.username}}
+Welcome to Personal Blog. A website where you can create and share your opinions and others can read and comment on them it also has a feature to  display random quotes to inspire the  others. 
+
+We have just seen you have signed up for our application and want to welcome you to the family.
