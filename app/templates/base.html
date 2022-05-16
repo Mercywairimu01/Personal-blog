@@ -12,7 +12,8 @@
     <title>Flask Blog</title>
     {% endif%}
 </head>
-<body>
+<body style="background-image: url('../static/photos/bg.jpg');">
+
    <!-- Navbar block  --> 
     {% block navbar %}
       {% include 'navbar.html' %}
@@ -30,9 +31,22 @@
             {% block content%}
             
             {% endblock %}
+
+            <footer  id="footer" style="text-align: center;margin-top: 10px;color: white;">
+                <p class="small" >
+                     Powered by
+                     <p>Premoh  © Copyright 2022 
+                         <br>
+                         Mercy Wambui
+                     </p>
+                   
+                </p>
+            </footer>
+
             </div>
        </div>
     </div>
+   
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

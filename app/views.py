@@ -15,7 +15,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 @app.route("/",methods=['GET', 'POST'])
 @app.route("/home",methods=['GET', 'POST'])
 def home():
-    random_quote_url = 'http://quotes.stormconsultancy.co.uk/random.json'
+    random_quote_url ='http://quotes.stormconsultancy.co.uk/random.json'
     quote_response = requests.get(random_quote_url)
     quote_data = quote_response.json()
     comments=Comment.query.all()
@@ -26,7 +26,7 @@ def home():
         receivemail = form.email.data
         senderemail = mail
         msg = Message('Hey there.', sender=senderemail, recipients=receivemail)
-        msg.html = '<h2>Welcome to Gs-Blog.</h2> <p>G-Blog is a personal blogging website where you can create and share your opinions and other users can read and comment on them. Additionally, add a feature that displays random quotes to inspire your users.</p>'
+        msg.html = '<h2>Welcome to Personal Blog.</h2> <p>This is a personal blogging website where you can create and share your opinions and other users can read and comment on them. Additionally, add a feature that displays random quotes to inspire your users.</p>'
         mail.send(msg)
         flash('You have been added to our subscription', 'success')
         return redirect(url_for('home'))
@@ -47,14 +47,12 @@ def comment():
         db.session.commit()
         flash("Comment added",'success')
         return redirect(url_for('home')) 
-    return render_template('comment.html',title ='New Comment',form =form)
+    return render_template('comment.html',title ='New Comment',form =form,comment=comment)
 
 @app.route("/comment/<int:comment_id>/delete", methods=['post'])
 @login_required
 def delete_comment(comment_id):
     comment = Comment.query.get_or_404(comment_id)
-    if post.postor != current_user:
-        abort(403)
     db.session.delete(comment)
     db.session.commit()
     flash(' Comment deleted!', 'success')
