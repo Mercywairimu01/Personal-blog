@@ -29,6 +29,7 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     title = db.Column(db.String(255),nullable = False)
     content =db.Column(db.Text(255),nullable = False)
+    comments = db.relationship('Comment', backref='post', lazy='dynamic') 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable =False)
     date_posted = db.Column(db.DateTime, default = datetime.utcnow)
    
@@ -37,26 +38,11 @@ class Post(db.Model):
     
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    comment = db.Column(db.Text(),nullable = False)
-    # user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable = False)
-    # post_id = db.Column(db.Integer,db.ForeignKey('post.id'),nullable = False)
+    content = db.Column(db.Text)
+    post_id = db.Column(db.Integer,db.ForeignKey('post.id'),nullable = False)
     
-    def save_comment(self):
-        db.session.add(self)
-        db.session.commit()
-        
-    def delete_comment(self):
-        db.session.delete(self)
-        db.session.commit()
-        
-
-    # @classmethod
-    # def get_comment(cls,post_id):
-    #     comment = Comment.query.filter_by(post_id=post_id).all()
-
-        # return comment
-    
+  
     def __repr__(self):
-        return f'comment:{self.comment}'
+        return f"Comment('{self. content[:20]}')"
 
 

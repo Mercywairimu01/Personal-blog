@@ -1,29 +1,24 @@
 {% extends 'base.html'%}
-{% block content %}
-<div class="comment-section" style="margin-top:40px ;">
-    <form action="" method="POST" class="form">
-        {{ form.hidden_tag()}}
-        <fieldset class="form-group">
-           
-            <div class="form-group">
-                {{form.comment.label(class='form-control-label')}}
-                {% if form.comment.errors%}
-                {{form.comment(class='form-control form-control-lg is-invalid')}}
-                <div class="invalid-feedback">
-                    {% for error in form.comment.errors%}
-                    <span>{{error}}</span>
-                    {% endfor%}
+{% block content%}
+<span class="title"><h1> Latest Comments </h1></span>
+<div class="content">
+            {% for comment in comments %}
+                <div class="comment">
+                    <i>
+                        (#{{ comment.id }})
+                        <p>{{ comment.content }}</p>
+                    </i>
+                    <p class="title">
+                    On <a href="{{ url_for('post',
+                                            post_id=comment.post.id) }}">
+                            {{ comment.post.title }}
+                          </a>
+                    </p>
                 </div>
+            {% endfor %}
+        </div>
+</div>
 
-                {% else%}
-                {{form.comment(class='form-control form-control-lg')}}
-                {% endif%}
-            </div>
-          
-        </fieldset>
-        <div class="form-group mt-2">
-            {{form.submit(class='btn btn-outline-info')}}
-        </div>
-        </form>
-        </div>
 {% endblock%}
+
+

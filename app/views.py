@@ -12,13 +12,13 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 
 
+
 @app.route("/",methods=['GET', 'POST'])
 @app.route("/home",methods=['GET', 'POST'])
 def home():
     random_quote_url ='http://quotes.stormconsultancy.co.uk/random.json'
     quote_response = requests.get(random_quote_url)
     quote_data = quote_response.json()
-    comments=Comment.query.all()
     posts=Post.query.order_by(Post.date_posted.desc())
     
     form = SubscriptionForm()
@@ -30,33 +30,13 @@ def home():
         mail.send(msg)
         flash('You have been added to our subscription', 'success')
         return redirect(url_for('home'))
-    return render_template('home.html',posts=posts,comments=comments,quote_data =quote_data)
+    return render_template('home.html',posts=posts,quote_data =quote_data)
 
 
 @app.route("/about")
 def about():
     return render_template('about.html',title ='About')
 
-@app.route('/comment/new', methods = ['post','GET'])
-@login_required
-def comment():
-    form = CommentForm()
-    if form.validate_on_submit():
-        comment = Comment(comment=form.comment.data)
-        db.session.add(comment)
-        db.session.commit()
-        flash("Comment added",'success')
-        return redirect(url_for('home')) 
-    return render_template('comment.html',title ='New Comment',form =form,comment=comment)
-
-@app.route("/comment/<int:comment_id>/delete", methods=['post'])
-@login_required
-def delete_comment(comment_id):
-    comment = Comment.query.get_or_404(comment_id)
-    db.session.delete(comment)
-    db.session.commit()
-    flash(' Comment deleted!', 'success')
-    return redirect(url_for('home'))
 
 
 def save_avatar(form_picture):
@@ -141,11 +121,16 @@ def new_post():
         return redirect(url_for('home')) 
     return render_template('new_posts.html',title ='New post',form =form)
 
-@app.route('/post/<int:post_id>')
-@login_required
+@app.route('/<int:post_id>/', methods=('GET', 'POST'))
 def post(post_id):
     post = Post.query.get_or_404(post_id)
-    return render_template('post.html', title=post.title, post=post, legend='New post')
+    if request.method == 'POST':
+        comment = Comment(content=request.form['content'], post=post)
+        db.session.add(comment)
+        db.session.commit()
+        return redirect(url_for('post', post_id=post.id))
+
+    return render_template('post.html', post=post)
 
 @app.route("/post/<int:post_id>/update", methods=['GET', 'post'])
 @login_required
@@ -177,6 +162,21 @@ def delete_post(post_id):
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('home'))
+# ...
+
+@app.route('/comments/')
+def comments():
+    form= CommentForm()
+    comments = Comment.query.order_by(Comment.id.desc()).all()
+    return render_template('comment.html', comments=comments ,form=form)
+
+@app.post('/comments/<int:comment_id>/delete')
+def delete_comment(comment_id):
+    comment = Comment.query.get_or_404(comment_id)
+    post_id = comment.post.id
+    db.session.delete(comment)
+    db.session.commit()
+    return redirect(url_for('post', post_id=post_id))
 
 @app.route("/subscribe")
 def subscribe():

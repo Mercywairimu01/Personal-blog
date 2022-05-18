@@ -24,7 +24,7 @@
           <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
           <p class="article-content">{{ post.content }}</p>
           
-          <button class="btn bg-info" > <a href="{{ url_for('comment') }}" style="text-decoration:none ; color: black;">Comment</a> </button>
+         <a href="{{ url_for('comments') }}" style="text-decoration:none ; color: black;">Comments</a> 
          
         </div>
       </article>
