@@ -1,6 +1,9 @@
 # Personal-blog
 This is  a personal blogging website where users can create and share their opinions and other users can read and comment on them it also has a feature to  display random quotes to inspire the  users. 
+The project's live link is https://psl-blog.herokuapp.com/
 ## By Mercy Wairimu
+
+<img src="https://raw.githubusercontent.com/Mercywairimu01/Personal-blog/main/app/static/photos/Screenshot%20from%202022-05-19%2015-34-12.png">
 ## Technology Used
 
 1. Python3
